@@ -135,16 +135,24 @@ namespace MonopolyProject {
             dgvItemPlayer1.RefreshDataSource();
             lblNamePlayer2.Text = aListPlayer[1].Name;
             lblMoneyPlayer2.Text = aListPlayer[1].Money.ToString();
+            dgvItemPlayer2.DataSource = aListPlayer[1].ListHouses;
+            dgvItemPlayer2.RefreshDataSource();
             if(amountPlayer == 3) {
                 lblNamePlayer3.Text = aListPlayer[2].Name;
                 lblMoneyPlayer3.Text = aListPlayer[2].Money.ToString();
+                dgvItemPlayer3.DataSource = aListPlayer[2].ListHouses;
+                dgvItemPlayer3.RefreshDataSource();
             }
             else {
                 if(amountPlayer == 4) {
                     lblNamePlayer3.Text = aListPlayer[2].Name;
                     lblMoneyPlayer3.Text = aListPlayer[2].Money.ToString();
+                    dgvItemPlayer3.DataSource = aListPlayer[2].ListHouses;
+                    dgvItemPlayer3.RefreshDataSource();
                     lblNamePlayer4.Text = aListPlayer[3].Name;
                     lblMoneyPlayer4.Text = aListPlayer[3].Money.ToString();
+                    dgvItemPlayer4.DataSource = aListPlayer[3].ListHouses;
+                    dgvItemPlayer4.RefreshDataSource();
                 }
             }
         }
@@ -158,6 +166,15 @@ namespace MonopolyProject {
             lblBankMoney.Text = this.bankMoney.ToString();
             NextTurnCoord aNextTurnCoord = new NextTurnCoord();
             aListNextTurnCoord = aNextTurnCoord.CreateListNextTurnCoord(amountPlayer);
+            if(amountPlayer == 2) {
+                dgvItemPlayer3.Visible = false;
+                dgvItemPlayer4.Visible = false;
+            }
+            else {
+                if(amountPlayer == 3) {
+                    dgvItemPlayer4.Visible = false;
+                }
+            }
         }
 
         public void CreateVehicle() {
@@ -253,7 +270,7 @@ namespace MonopolyProject {
             lblCountdownClock_Seconds.Text = seconds.ToString();
         }
 
-        public void terCountdownClockStart(){
+        public void terCountdownClock_Start(){
             terCountdownClock.Start();
         }
     #endregion
@@ -337,11 +354,15 @@ namespace MonopolyProject {
         }
 
         public void EnalbleDice() {
-            this.popDeedCard2.Visible = false;
-            this.popStatusMoneyPlayer.Visible = false;
-            this.pboDice.Enabled = true;
-            this.terHidenDice.Stop();
-            this.NextTurnEffect();
+            popDeedCard2.Visible = false;
+            lblStatusMoneyPlayer.Visible = false;
+            lblChangeMoneyPlayer1.Visible = false;
+            lblChangeMoneyPlayer2.Visible = false;
+            lblChangeMoneyPlayer3.Visible = false;
+            lblChangeMoneyPlayer4.Visible = false;
+            pboDice.Enabled = true;
+            terHidenDice.Stop();
+            NextTurnEffect();
         }
 
     #endregion
@@ -441,9 +462,10 @@ namespace MonopolyProject {
                             temp.Money += money;
                             aListPlayer.Find(b => b.ID == turnPlayer).Money -= money;
                             lblStatusMoneyPlayer.Text = aListPlayer.Find(b => b.ID == turnPlayer).Name + " vừa trả " + temp.Name + " tiền thuê nhà: " + money.ToString();
-                            popStatusMoneyPlayer.Location = this.PositionCenter(pos);
-                            popStatusMoneyPlayer.BringToFront();
-                            popStatusMoneyPlayer.Show();
+                            lblStatusMoneyPlayer.BringToFront();
+                            lblStatusMoneyPlayer.Show();
+                            this.DisplayChangeMoneyPlayer(turnPlayer, money, false);
+                            this.DisplayChangeMoneyPlayer(temp.ID, money, true);
                             this.LoadPlayer();
                             break;
                         }
@@ -458,15 +480,68 @@ namespace MonopolyProject {
             if(aPlotInfo.PricePlot > 0) {
                 aListPlayer.Find(b => b.ID == turnPlayer).Money -= aPlotInfo.PricePlot;
                 lblStatusMoneyPlayer.Text = aListPlayer.Find(b => b.ID == turnPlayer).Name + " vừa trả " + aPlotInfo.Name + ": " + aPlotInfo.PricePlot.ToString();
-                popStatusMoneyPlayer.Location = this.PositionCenter(pos);
-                popStatusMoneyPlayer.BringToFront();
-                popStatusMoneyPlayer.Show();
+                lblStatusMoneyPlayer.BringToFront();
+                lblStatusMoneyPlayer.Show();
+                this.DisplayChangeMoneyPlayer(turnPlayer, aPlotInfo.PricePlot, false);
                 this.LoadPlayer();
             }
         }
 
         private void terWaitDice_Tick(object sender, EventArgs e) {
             this.StartDice();
+        }
+
+        public void DisplayChangeMoneyPlayer(int player, int money, bool status) {
+            if(player == 1) {
+                if(status) {
+                    lblChangeMoneyPlayer1.Text = "+ " + money.ToString();
+                    lblChangeMoneyPlayer1.ForeColor = System.Drawing.Color.DarkGreen;
+                }
+                else {
+                    lblChangeMoneyPlayer1.Text = "- " + money.ToString();
+                    lblChangeMoneyPlayer1.ForeColor = System.Drawing.Color.DarkRed;
+                }
+                lblChangeMoneyPlayer1.Visible = true;
+            }
+            else {
+                if(player == 2) {
+                    if(status) {
+                        lblChangeMoneyPlayer2.Text = "+ " + money.ToString();
+                        lblChangeMoneyPlayer2.ForeColor = System.Drawing.Color.DarkGreen;
+                    }
+                    else {
+                        lblChangeMoneyPlayer2.Text = "- " + money.ToString();
+                        lblChangeMoneyPlayer2.ForeColor = System.Drawing.Color.DarkRed;
+                    }
+                    lblChangeMoneyPlayer2.Visible = true;
+                }
+                else {
+                    if(player == 3) {
+                        if(status) {
+                            lblChangeMoneyPlayer3.Text = "+ " + money.ToString();
+                            lblChangeMoneyPlayer3.ForeColor = System.Drawing.Color.DarkGreen;
+                        }
+                        else {
+                            lblChangeMoneyPlayer3.Text = "- " + money.ToString();
+                            lblChangeMoneyPlayer3.ForeColor = System.Drawing.Color.DarkRed;
+                        }
+                        lblChangeMoneyPlayer3.Visible = true;
+                    }
+                    else {
+                        if(player == 4) {
+                            if(status) {
+                                lblChangeMoneyPlayer4.Text = "+ " + money.ToString();
+                                lblChangeMoneyPlayer4.ForeColor = System.Drawing.Color.DarkGreen;
+                            }
+                            else {
+                                lblChangeMoneyPlayer4.Text = "- " + money.ToString();
+                                lblChangeMoneyPlayer4.ForeColor = System.Drawing.Color.DarkRed;
+                            }
+                            lblChangeMoneyPlayer4.Visible = true;
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -641,8 +716,12 @@ namespace MonopolyProject {
 
 
 
-
-
+        private void pboAboutUs_Click(object sender, EventArgs e) {
+            terCountdownClock.Stop();
+            terHidenDice.Stop();
+            frmAboutUs afrmAboutUs = new frmAboutUs(this);
+            afrmAboutUs.ShowDialog();
+        }   
 
         private void pboExit_Click(object sender, EventArgs e) {
             DialogResult result = MessageBox.Show("Bạn có muốn lưu lại phiên chơi này?", "Thoát ứng dụng", MessageBoxButtons.YesNoCancel);
@@ -678,7 +757,38 @@ namespace MonopolyProject {
             this.EnalbleDice();
         }
 
-        
+        private void btnDetailItemPlayer1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+            
+        }
+
+        private void btnSaleItemPlayer1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnDetailItemPlayer2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnSaleItemPlayer2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnDetailItemPlayer3_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnSaleItemPlayer3_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnDetailItemPlayer4_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+
+        private void btnSaleItemPlayer4_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
+
+        }
+    
 
     }
 

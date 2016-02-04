@@ -81,7 +81,8 @@ namespace MonopolyProject {
                 this.afrmMain.bankMoney += int.Parse(lblTotalMoney.Text);
                 this.afrmMain.aListPlotInfo.Find(b => b.ID == this.aPlotInfo.ID).Status = 1;
                 this.afrmMain.LoadPlayer();
-                this.afrmMain.terCountdownClockStart();
+                this.afrmMain.DisplayChangeMoneyPlayer(this.afrmMain.turnPlayer, int.Parse(lblTotalMoney.Text), false);
+                this.afrmMain.terCountdownClock_Start();
                 this.afrmMain.EnalbleDice();
                 this.Close();
             }
@@ -110,7 +111,7 @@ namespace MonopolyProject {
         }
 
         private void pboExit_Click(object sender, EventArgs e) {
-            this.afrmMain.terCountdownClockStart();
+            this.afrmMain.terCountdownClock_Start();
             this.afrmMain.EnalbleDice();
             this.Close();
         }
