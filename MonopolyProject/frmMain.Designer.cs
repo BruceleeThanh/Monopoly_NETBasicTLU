@@ -25,14 +25,14 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.pboExit = new System.Windows.Forms.PictureBox();
             this.pboSetting = new System.Windows.Forms.PictureBox();
             this.pboAboutUs = new System.Windows.Forms.PictureBox();
@@ -62,7 +62,6 @@
             this.pboTurnPlayer = new System.Windows.Forms.PictureBox();
             this.terWaitDice = new System.Windows.Forms.Timer(this.components);
             this.popDeedCard2 = new DevExpress.XtraEditors.PopupContainerControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.picNo_DeedCard2 = new DevExpress.XtraEditors.PictureEdit();
             this.picYes_DeedCard2 = new DevExpress.XtraEditors.PictureEdit();
             this.lblName_DeedCard2 = new DevExpress.XtraEditors.LabelControl();
@@ -417,7 +416,6 @@
             // 
             this.popDeedCard2.Appearance.BackColor = System.Drawing.Color.Lavender;
             this.popDeedCard2.Appearance.Options.UseBackColor = true;
-            this.popDeedCard2.Controls.Add(this.labelControl1);
             this.popDeedCard2.Controls.Add(this.picNo_DeedCard2);
             this.popDeedCard2.Controls.Add(this.picYes_DeedCard2);
             this.popDeedCard2.Controls.Add(this.lblName_DeedCard2);
@@ -426,14 +424,6 @@
             this.popDeedCard2.Name = "popDeedCard2";
             this.popDeedCard2.Size = new System.Drawing.Size(257, 116);
             this.popDeedCard2.TabIndex = 27;
-            // 
-            // labelControl1
-            // 
-            this.labelControl1.Location = new System.Drawing.Point(94, 41);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(63, 13);
-            this.labelControl1.TabIndex = 10;
-            this.labelControl1.Text = "labelControl1";
             // 
             // picNo_DeedCard2
             // 
@@ -523,9 +513,8 @@
             this.lblStatusMoneyPlayer.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblStatusMoneyPlayer.Location = new System.Drawing.Point(513, 136);
             this.lblStatusMoneyPlayer.Name = "lblStatusMoneyPlayer";
-            this.lblStatusMoneyPlayer.Size = new System.Drawing.Size(260, 71);
+            this.lblStatusMoneyPlayer.Size = new System.Drawing.Size(260, 106);
             this.lblStatusMoneyPlayer.TabIndex = 0;
-            this.lblStatusMoneyPlayer.Text = "Thành vừa trả Thư tiền thuê nhà: 200";
             this.lblStatusMoneyPlayer.Visible = false;
             // 
             // dgvItemPlayer1
@@ -611,7 +600,7 @@
             // 
             this.btnDetailItemPlayer1.AutoHeight = false;
             this.btnDetailItemPlayer1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, "", null, null, true)});
             this.btnDetailItemPlayer1.Name = "btnDetailItemPlayer1";
             this.btnDetailItemPlayer1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDetailItemPlayer1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDetailItemPlayer1_ButtonClick);
@@ -633,7 +622,7 @@
             // 
             this.btnSaleItemPlayer1.AutoHeight = false;
             this.btnSaleItemPlayer1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject18, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject10, "", null, null, true)});
             this.btnSaleItemPlayer1.Name = "btnSaleItemPlayer1";
             this.btnSaleItemPlayer1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnSaleItemPlayer1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnSaleItemPlayer1_ButtonClick);
@@ -721,7 +710,7 @@
             // 
             this.btnDetailItemPlayer2.AutoHeight = false;
             this.btnDetailItemPlayer2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject19, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject11, "", null, null, true)});
             this.btnDetailItemPlayer2.Name = "btnDetailItemPlayer2";
             this.btnDetailItemPlayer2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDetailItemPlayer2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDetailItemPlayer2_ButtonClick);
@@ -743,7 +732,7 @@
             // 
             this.btnSaleItemPlayer2.AutoHeight = false;
             this.btnSaleItemPlayer2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject20, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject12, "", null, null, true)});
             this.btnSaleItemPlayer2.Name = "btnSaleItemPlayer2";
             this.btnSaleItemPlayer2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnSaleItemPlayer2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnSaleItemPlayer2_ButtonClick);
@@ -835,7 +824,7 @@
             // 
             this.btnDetailItemPlayer3.AutoHeight = false;
             this.btnDetailItemPlayer3.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, "", null, null, true)});
             this.btnDetailItemPlayer3.Name = "btnDetailItemPlayer3";
             this.btnDetailItemPlayer3.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDetailItemPlayer3.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDetailItemPlayer3_ButtonClick);
@@ -857,7 +846,7 @@
             // 
             this.btnSaleItemPlayer3.AutoHeight = false;
             this.btnSaleItemPlayer3.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject22, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject14, "", null, null, true)});
             this.btnSaleItemPlayer3.Name = "btnSaleItemPlayer3";
             this.btnSaleItemPlayer3.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnSaleItemPlayer3.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnSaleItemPlayer3_ButtonClick);
@@ -951,7 +940,7 @@
             // 
             this.btnDetailItemPlayer4.AutoHeight = false;
             this.btnDetailItemPlayer4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject23, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDetailItemPlayer4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject15, "", null, null, true)});
             this.btnDetailItemPlayer4.Name = "btnDetailItemPlayer4";
             this.btnDetailItemPlayer4.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnDetailItemPlayer4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnDetailItemPlayer4_ButtonClick);
@@ -973,7 +962,7 @@
             // 
             this.btnSaleItemPlayer4.AutoHeight = false;
             this.btnSaleItemPlayer4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnSaleItemPlayer4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject16, "", null, null, true)});
             this.btnSaleItemPlayer4.Name = "btnSaleItemPlayer4";
             this.btnSaleItemPlayer4.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnSaleItemPlayer4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnSaleItemPlayer4_ButtonClick);
@@ -1158,7 +1147,6 @@
         private DevExpress.XtraEditors.PictureEdit pboBank;
         private DevExpress.XtraEditors.LabelControl lblBankMoney;
         private DevExpress.XtraEditors.LabelControl lblStatusMoneyPlayer;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraGrid.GridControl dgvItemPlayer1;
         private DevExpress.XtraGrid.Views.Grid.GridView viewItemPlayer1;
         private DevExpress.XtraGrid.Columns.GridColumn colName;

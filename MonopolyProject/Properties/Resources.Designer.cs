@@ -163,6 +163,16 @@ namespace MonopolyProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap auction_icon {
+            get {
+                object obj = ResourceManager.GetObject("auction-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap back_icon {
             get {
                 object obj = ResourceManager.GetObject("back-icon", resourceCulture);
@@ -363,6 +373,16 @@ namespace MonopolyProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Go_back_icon {
+            get {
+                object obj = ResourceManager.GetObject("Go-back-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap helicopter {
             get {
                 object obj = ResourceManager.GetObject("helicopter", resourceCulture);
@@ -436,6 +456,16 @@ namespace MonopolyProject.Properties {
         internal static System.Drawing.Bitmap next_icon {
             get {
                 object obj = ResourceManager.GetObject("next-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap payment_icon {
+            get {
+                object obj = ResourceManager.GetObject("payment-icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -34,21 +34,26 @@ namespace MonopolyProject {
         int directionVehicle = 0;
         int destinationVehicle = 0;
         int currentPosition = 0;
+        int passedPosition = 0;
         int countTick = 0;
         int tickLimit = 0;
         int X = 0;
         int Y = 0;
+        public int percentCommission = 20; // Tỷ lệ phần trăm số tiền chuộc lại nhà từ Ngân hàng.
+        int pointerCommunityChest = 0; // Con trỏ bốc Khí Vận
+        int pointerChance = 0; // Con trỏ bốc Cơ Hội
 
 
+        bool pressKeyStatus = false;
         bool isDiceMove = true;
         bool isDoneMoveVehicle = false;
 
         DispatcherTimer dtiMoveVehicle = null;
 
-        #region Biến xử lý đồng hồ đếm ngược
+    #region Biến xử lý đồng hồ đếm ngược
         int minutes = 0;
         int seconds = 59;
-        #endregion
+    #endregion
 
         public frmMain() {
             InitializeComponent();
@@ -64,16 +69,15 @@ namespace MonopolyProject {
             this.PlayingProcess();
         }
 
+        public override void Refresh() {
+            base.Refresh();
+            this.LoadPlayer();
+            lblBankMoney.Text = bankMoney.ToString();
+        }
+
         public void frmMain_Load() {
             aListPlotInfo = this.ReadFilePlotInfo();
             this.ClassifyLuckyDraw(this.ReadFileLuckyDraw());
-
-            //aucLuckyDrawCard = new ucLuckyDrawCard(1, aListCommunityChest[0].Content);
-            //aucLuckyDrawCard.Location = new Point(630, 450);
-            //this.Controls.Add(aucLuckyDrawCard);
-            //aucLuckyDrawCard.BringToFront();
-            //aucLuckyDrawCard.Visible = true;
-
         }
 
         public List<PlotInfo> ReadFilePlotInfo() {
@@ -110,9 +114,11 @@ namespace MonopolyProject {
             while(!read.EndOfStream) {
                 int brand = int.Parse(read.ReadLine());
                 int money = int.Parse(read.ReadLine());
+                int toPlot = int.Parse(read.ReadLine());
+                int steps = int.Parse(read.ReadLine());
                 int type = int.Parse(read.ReadLine());
                 string content = read.ReadLine();
-                aList.Add(new LuckyDraw(brand, money, type, content));
+                aList.Add(new LuckyDraw(brand, money, toPlot, steps, type, content));
             }
             return aList;
         }
@@ -221,6 +227,7 @@ namespace MonopolyProject {
                     this.Controls.Add(aucDeedCard1);
                     aucDeedCard1.BringToFront();
                     aucDeedCard1.Visible = true;
+                    break;
                 }
             }
             terDeedCard1.Stop();
@@ -280,6 +287,17 @@ namespace MonopolyProject {
             this.StartDice();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+            switch (keyData) {
+                case Keys.Space:
+                    if(pressKeyStatus) {
+                        this.StartDice();
+                    }
+                break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void terDice_Tick(object sender, EventArgs e) {
             pboResultDice1.Visible = false;
             pboResultDice2.Visible = false;
@@ -288,10 +306,11 @@ namespace MonopolyProject {
         }
 
         private void terHidenDice_Tick(object sender, EventArgs e) {
-            this.EnalbleDice();
+            this.EnableDice();
         }
 
         public void StartDice() {
+            pressKeyStatus = false;
             this.pboDice.Enabled = false;
             this.popDeedCard2.Visible = false;
             terWaitDice.Stop();
@@ -305,12 +324,28 @@ namespace MonopolyProject {
                 pboResultDice1.Visible = true;
                 terDice.Start();
                 if(isDiceMove) {
-                    destinationVehicle = aListPlayer.Find(b => b.ID == turnPlayer).Position + currentDice;
-                    if(destinationVehicle > 40) {
-                        destinationVehicle -= 40;
+                    if(aListPlayer.Find(b => b.ID == turnPlayer).Position != 31) {
+                        destinationVehicle = aListPlayer.Find(b => b.ID == turnPlayer).Position + currentDice;
+                        if(destinationVehicle > 40) {
+                            destinationVehicle -= 40;
+                        }
+                        this.MoveVehicleNormal(turnPlayer, destinationVehicle, true, true);
+                        terHidenDice.Start();
                     }
-                    this.MoveVehicleNormal(destinationVehicle);
-                    terHidenDice.Start();
+                    else {
+                        if(currentDice == 6) {
+                            destinationVehicle = aListPlayer.Find(b => b.ID == turnPlayer).Position + currentDice;
+                            if(destinationVehicle > 40) {
+                                destinationVehicle -= 40;
+                            }
+                            this.MoveVehicleNormal(turnPlayer, destinationVehicle, true, true);
+                            terHidenDice.Start();
+                        }
+                        else {
+                            terHidenDice.Start();
+                        }
+                    }
+                    
                 }
                 else {
 
@@ -333,7 +368,7 @@ namespace MonopolyProject {
                         if(destinationVehicle > 40) {
                             destinationVehicle -= 40;
                         }
-                        this.MoveVehicleNormal(destinationVehicle);
+                        this.MoveVehicleNormal(turnPlayer, destinationVehicle, true, true);
                         terHidenDice.Start();
                     }
                     else {
@@ -343,18 +378,19 @@ namespace MonopolyProject {
             }
         }
 
-        public void MoveVehicleNormal(int end) {
-            aListPlayer.Find(b => b.ID == turnPlayer).VehicleImage.Location = this.PositionCenter(end);
-            aListPlayer.Find(b => b.ID == turnPlayer).VehicleImage.BringToFront();
-            aListPlayer.Find(b => b.ID == turnPlayer).Position = end;
-            tssPlayerMoving.Text = aListPlayer.Find(b => b.ID == turnPlayer).Name;
+        public void MoveVehicleNormal(int IDPlayer, int end, bool isMoveByDice, bool isPassDeparturePosition) {
+            passedPosition = aListPlayer.Find(b => b.ID == IDPlayer).Position;
+            aListPlayer.Find(b => b.ID == IDPlayer).VehicleImage.Location = this.PositionCenter(end);
+            aListPlayer.Find(b => b.ID == IDPlayer).VehicleImage.BringToFront();
+            aListPlayer.Find(b => b.ID == IDPlayer).Position = end;
+            tssPlayerMoving.Text = aListPlayer.Find(b => b.ID == IDPlayer).Name;
             tssPlayerMovingPlot.Text = aListPlotInfo.Find(b => b.ID == end).Name;
-            
-            this.PlotAccess(end);
+            this.PlotAccess(IDPlayer, end, isMoveByDice, isPassDeparturePosition);
         }
 
-        public void EnalbleDice() {
+        public void EnableDice() {
             popDeedCard2.Visible = false;
+            lblStatusMoneyPlayer.Text = "";
             lblStatusMoneyPlayer.Visible = false;
             lblChangeMoneyPlayer1.Visible = false;
             lblChangeMoneyPlayer2.Visible = false;
@@ -363,6 +399,8 @@ namespace MonopolyProject {
             pboDice.Enabled = true;
             terHidenDice.Stop();
             NextTurnEffect();
+            pressKeyStatus = true;
+            this.Focus();
         }
 
     #endregion
@@ -371,8 +409,11 @@ namespace MonopolyProject {
             //terWaitDice.Start();
         }
 
-        public void PlotAccess(int pos) {
-            this.currentPosition = pos;
+        public void PlotAccess(int IDPlayer, int pos, bool isMoveByDice, bool isPassDeparturePosition) {
+            currentPosition = pos;
+            if(isPassDeparturePosition) {
+                this.passDepartureStation_Money(IDPlayer, passedPosition, pos);
+            }
             PlotInfo aPlotInfo = aListPlotInfo.Find(b => b.ID == pos);
             if(aPlotInfo.Status == 0) {
                 if(aPlotInfo.Type == 3 || aPlotInfo.Type == 4 || aPlotInfo.Type == 5) {
@@ -399,14 +440,24 @@ namespace MonopolyProject {
                     popDeedCard2.Show();
                 }
                 else {
-                    if(aPlotInfo.Type == 0) {
-                        this.MoneyTaxPlot(pos);
+                    if(aPlotInfo.Type == 0 && isMoveByDice && aPlotInfo.ID != 1) {
+                        this.MoneyTaxPlot(turnPlayer, pos);
+                    }
+                    else {
+                        if(aPlotInfo.Type == 1) {
+                            this.takeLuckyDraw(turnPlayer, 1);
+                        }
+                        else {
+                            if(aPlotInfo.Type == 2) {
+                                this.takeLuckyDraw(turnPlayer, 0);
+                            }
+                        }
                     }
                 }
             }
             else {
-                if(aPlotInfo.Status == 1 && aPlotInfo.Type == 3) {
-                    this.MoneyLeasePlot1(pos);
+                if(aPlotInfo.Status == 1 && aPlotInfo.Type == 3 && isMoveByDice) {
+                    this.MoneyLeasePlot1(turnPlayer, pos);
                 }
             }
             
@@ -424,66 +475,88 @@ namespace MonopolyProject {
             lblBankMoney.Text = bankMoney.ToString();
         }
 
-        public void MoneyLeasePlot1(int pos) {
+        public bool passDepartureStation(int start, int end) {
+            if(start > end) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public void passDepartureStation_Money(int IDPlayer, int start, int end) {
+            if(this.passDepartureStation(start, end)) {
+                aListPlayer.Find(b => b.ID == IDPlayer).Money += 200;
+                bankMoney -= 200;
+                this.DisplayChangeMoneyPlayer(IDPlayer, 200, true);
+                lblStatusMoneyPlayer.Text = lblStatusMoneyPlayer.Text + aListPlayer.Find(b => b.ID == IDPlayer).Name + " vừa được thưởng tiền khi qua Trạm khởi hành.\n";
+                lblStatusMoneyPlayer.BringToFront();
+                lblStatusMoneyPlayer.Show();
+            }
+        }
+
+        public void MoneyLeasePlot1(int IDPlayer, int pos) {
             foreach(Player temp in aListPlayer) {
                 foreach(PlayerHouses temp1 in temp.ListHouses) {
                     if(temp1.IDPlot == pos) {
-                        if(turnPlayer != temp.ID) {
-                            int money = 0;
-                            PlotInfo aPlotInfo = aListPlotInfo.Find(b => b.ID == pos);
-                            if(temp1.Apartments == 0) {
-                                money = aPlotInfo.LeaseLand;
-                            }
-                            else {
-                                if(temp1.Apartments == 1) {
-                                    money = aPlotInfo.LeaseOneHouse;
+                        if(temp1.Status == 1) {
+                            if(IDPlayer != temp.ID) {
+                                int money = 0;
+                                PlotInfo aPlotInfo = aListPlotInfo.Find(b => b.ID == pos);
+                                if(temp1.Apartments == 0) {
+                                    money = aPlotInfo.LeaseLand;
                                 }
                                 else {
-                                    if(temp1.Apartments == 2) {
-                                        money = aPlotInfo.LeaseTwoHouses;
+                                    if(temp1.Apartments == 1) {
+                                        money = aPlotInfo.LeaseOneHouse;
                                     }
                                     else {
-                                        if(temp1.Apartments == 3) {
-                                            money = aPlotInfo.LeaseThreeHouses;
+                                        if(temp1.Apartments == 2) {
+                                            money = aPlotInfo.LeaseTwoHouses;
                                         }
                                         else {
-                                            if(temp1.Apartments == 4) {
-                                                money = aPlotInfo.LeaseFourHouses;
+                                            if(temp1.Apartments == 3) {
+                                                money = aPlotInfo.LeaseThreeHouses;
                                             }
                                             else {
-                                                if(temp1.Apartments == 5) {
-                                                    money = aPlotInfo.LeaseRes;
+                                                if(temp1.Apartments == 4) {
+                                                    money = aPlotInfo.LeaseFourHouses;
+                                                }
+                                                else {
+                                                    if(temp1.Apartments == 5) {
+                                                        money = aPlotInfo.LeaseRes;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
+                                temp.Money += money;
+                                aListPlayer.Find(b => b.ID == IDPlayer).Money -= money;
+                                lblStatusMoneyPlayer.Text = lblStatusMoneyPlayer.Text + aListPlayer.Find(b => b.ID == IDPlayer).Name + " vừa trả " + temp.Name + " tiền thuê nhà: " + money.ToString();
+                                lblStatusMoneyPlayer.BringToFront();
+                                lblStatusMoneyPlayer.Show();
+                                this.DisplayChangeMoneyPlayer(IDPlayer, money, false);
+                                this.DisplayChangeMoneyPlayer(temp.ID, money, true);
+                                this.Refresh();
+                                break;
                             }
-                            temp.Money += money;
-                            aListPlayer.Find(b => b.ID == turnPlayer).Money -= money;
-                            lblStatusMoneyPlayer.Text = aListPlayer.Find(b => b.ID == turnPlayer).Name + " vừa trả " + temp.Name + " tiền thuê nhà: " + money.ToString();
-                            lblStatusMoneyPlayer.BringToFront();
-                            lblStatusMoneyPlayer.Show();
-                            this.DisplayChangeMoneyPlayer(turnPlayer, money, false);
-                            this.DisplayChangeMoneyPlayer(temp.ID, money, true);
-                            this.LoadPlayer();
-                            break;
                         }
                     }
                 }
             }
         }
 
-        public void MoneyTaxPlot(int pos) {
+        public void MoneyTaxPlot(int IDPlayer, int pos) {
             PlotInfo aPlotInfo = new PlotInfo();
             aPlotInfo = aListPlotInfo.Find(b => b.ID == pos);
-            if(aPlotInfo.PricePlot > 0) {
-                aListPlayer.Find(b => b.ID == turnPlayer).Money -= aPlotInfo.PricePlot;
-                lblStatusMoneyPlayer.Text = aListPlayer.Find(b => b.ID == turnPlayer).Name + " vừa trả " + aPlotInfo.Name + ": " + aPlotInfo.PricePlot.ToString();
+            if(aPlotInfo.PricePlot > 0 && pos != 0) {
+                aListPlayer.Find(b => b.ID == IDPlayer).Money -= aPlotInfo.PricePlot;
+                lblStatusMoneyPlayer.Text = lblStatusMoneyPlayer.Text + aListPlayer.Find(b => b.ID == IDPlayer).Name + " vừa trả " + aPlotInfo.Name + ": " + aPlotInfo.PricePlot.ToString();
                 lblStatusMoneyPlayer.BringToFront();
                 lblStatusMoneyPlayer.Show();
-                this.DisplayChangeMoneyPlayer(turnPlayer, aPlotInfo.PricePlot, false);
-                this.LoadPlayer();
+                this.DisplayChangeMoneyPlayer(IDPlayer, aPlotInfo.PricePlot, false);
+                this.Refresh();
             }
         }
 
@@ -745,50 +818,274 @@ namespace MonopolyProject {
                 afrmBuyHouse.ShowDialog();
             }
             else {
-                MessageBox.Show("Bạn không đủ tiền để mua ô đất này.", "Mua đất", MessageBoxButtons.OK);
+                MessageBox.Show("Bạn không đủ tiền để mua ô đất này.", "Mua đất", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.popDeedCard2.Visible = false;
-                this.EnalbleDice();
+                this.EnableDice();
             }
             
         }
 
         private void picNo_DeedCard2_Click(object sender, EventArgs e) {
             this.popDeedCard2.Visible = false;
-            this.EnalbleDice();
+            this.EnableDice();
         }
 
+    #region Xử lý GridControls ItemPlayer
         private void btnDetailItemPlayer1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-            
+            terCountdownClock.Stop();
+            frmDetailHouse afrmDetailHouse = new frmDetailHouse(this, 1, int.Parse(viewItemPlayer1.GetFocusedRowCellValue("IDPlot").ToString()));
+            afrmDetailHouse.ShowDialog();
         }
 
         private void btnSaleItemPlayer1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            if(aListPlayer.Find(b => b.ID == 1).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer1.GetFocusedRowCellValue("IDPlot").ToString())).Status == 1) {
+                terCountdownClock.Stop();
+                frmSaleHouse afrmSaleHouse = new frmSaleHouse(this, 1, int.Parse(viewItemPlayer1.GetFocusedRowCellValue("IDPlot").ToString()));
+                afrmSaleHouse.ShowDialog();
+            }
+            else {
+                if(aListPlayer.Find(b => b.ID == 1).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer1.GetFocusedRowCellValue("IDPlot").ToString())).Status == 0) {
+                    MessageBox.Show("Miếng đất này đã được cầm cố cho Ngân hàng, không thể bán được!", "Bán nhà", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
 
         private void btnDetailItemPlayer2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            terCountdownClock.Stop();
+            frmDetailHouse afrmDetailHouse = new frmDetailHouse(this, 2, int.Parse(viewItemPlayer2.GetFocusedRowCellValue("IDPlot").ToString()));
+            afrmDetailHouse.ShowDialog();
         }
 
         private void btnSaleItemPlayer2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            if(aListPlayer.Find(b => b.ID == 2).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer2.GetFocusedRowCellValue("IDPlot").ToString())).Status == 1) {
+                terCountdownClock.Stop();
+                frmSaleHouse afrmSaleHouse = new frmSaleHouse(this, 2, int.Parse(viewItemPlayer2.GetFocusedRowCellValue("IDPlot").ToString()));
+                afrmSaleHouse.ShowDialog();
+            }
+            else {
+                if(aListPlayer.Find(b => b.ID == 2).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer2.GetFocusedRowCellValue("IDPlot").ToString())).Status == 0) {
+                    MessageBox.Show("Miếng đất này đã được cầm cố cho Ngân hàng, không thể bán được!", "Bán nhà", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
 
         private void btnDetailItemPlayer3_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            terCountdownClock.Stop();
+            frmDetailHouse afrmDetailHouse = new frmDetailHouse(this, 3, int.Parse(viewItemPlayer3.GetFocusedRowCellValue("IDPlot").ToString()));
+            afrmDetailHouse.ShowDialog();
         }
 
         private void btnSaleItemPlayer3_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            if(aListPlayer.Find(b => b.ID == 3).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer3.GetFocusedRowCellValue("IDPlot").ToString())).Status == 1) {
+                terCountdownClock.Stop();
+                frmSaleHouse afrmSaleHouse = new frmSaleHouse(this, 3, int.Parse(viewItemPlayer3.GetFocusedRowCellValue("IDPlot").ToString()));
+                afrmSaleHouse.ShowDialog();
+            }
+            else {
+                if(aListPlayer.Find(b => b.ID == 3).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer3.GetFocusedRowCellValue("IDPlot").ToString())).Status == 0) {
+                    MessageBox.Show("Miếng đất này đã được cầm cố cho Ngân hàng, không thể bán được!", "Bán nhà", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
 
         private void btnDetailItemPlayer4_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            terCountdownClock.Stop();
+            frmDetailHouse afrmDetailHouse = new frmDetailHouse(this, 4, int.Parse(viewItemPlayer4.GetFocusedRowCellValue("IDPlot").ToString()));
+            afrmDetailHouse.ShowDialog();
         }
 
         private void btnSaleItemPlayer4_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
-
+            if(aListPlayer.Find(b => b.ID == 4).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer4.GetFocusedRowCellValue("IDPlot").ToString())).Status == 1) {
+                terCountdownClock.Stop();
+                frmSaleHouse afrmSaleHouse = new frmSaleHouse(this, 4, int.Parse(viewItemPlayer4.GetFocusedRowCellValue("IDPlot").ToString()));
+                afrmSaleHouse.ShowDialog();
+            }
+            else {
+                if(aListPlayer.Find(b => b.ID == 4).ListHouses.Find(c => c.IDPlot == int.Parse(viewItemPlayer4.GetFocusedRowCellValue("IDPlot").ToString())).Status == 0) {
+                    MessageBox.Show("Miếng đất này đã được cầm cố cho Ngân hàng, không thể bán được!", "Bán nhà", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
-    
+    #endregion
+
+    #region Xử lý Khí Vận và Cơ Hội
+
+        public void takeLuckyDraw(int IDPlayer, int brand) {
+            this.Controls.Remove(aucLuckyDrawCard);
+            if(brand == 1) {
+                aucLuckyDrawCard = new ucLuckyDrawCard(brand, aListCommunityChest[pointerCommunityChest].Content);
+                aucLuckyDrawCard.Location = new Point(630, 440);
+                this.Controls.Add(aucLuckyDrawCard);
+                aucLuckyDrawCard.BringToFront();
+                aucLuckyDrawCard.Visible = true;
+                this.processLuckyDraw(IDPlayer, aListCommunityChest[pointerCommunityChest]);
+                pointerCommunityChest++;
+            }
+            else {
+                if(brand == 0) {
+                    aucLuckyDrawCard = new ucLuckyDrawCard(brand, aListChance[pointerChance].Content);
+                    aucLuckyDrawCard.Location = new Point(430, 150);
+                    this.Controls.Add(aucLuckyDrawCard);
+                    aucLuckyDrawCard.BringToFront();
+                    aucLuckyDrawCard.Visible = true;
+                    this.processLuckyDraw(IDPlayer, aListChance[pointerChance]);
+                    pointerChance++;
+                }
+            }
+        }
+
+        public void processLuckyDraw(int IDPlayer, LuckyDraw aLuckyDraw) {
+            if(aLuckyDraw.Type == 0) {
+                this.LuckyDraw_Type0(IDPlayer, aLuckyDraw.Money);
+                return;
+            }
+            if(aLuckyDraw.Type == 1) {
+                this.LuckyDraw_Type1(IDPlayer, aLuckyDraw.Money);
+                return;
+            }
+            if(aLuckyDraw.Type == 2) {
+                this.LuckyDraw_Type2(IDPlayer, aLuckyDraw.ToPlot);
+                return;
+            }
+            if(aLuckyDraw.Type == 3) {
+                this.LuckyDraw_Type3(IDPlayer, aLuckyDraw.ToPlot);
+                return;
+            }
+            if(aLuckyDraw.Type == 4) {
+                this.LuckyDraw_Type4(IDPlayer, aLuckyDraw.Steps);
+                return;
+            }
+            if(aLuckyDraw.Type == 5) {
+                if(aLuckyDraw.Brand == 1) {
+                    this.LuckyDraw_Type5(IDPlayer, 0);
+                }
+                else {
+                    this.LuckyDraw_Type5(IDPlayer, 1);
+                }
+                return;
+            }
+            if(aLuckyDraw.Type == 6) {
+                this.LuckyDraw_Type6(IDPlayer);
+                return;
+            }
+            if(aLuckyDraw.Type == 7) {
+                this.LuckyDraw_Type7(IDPlayer);
+                return;
+            }
+            if(aLuckyDraw.Type == 8) {
+                this.LuckyDraw_Type8(IDPlayer, aLuckyDraw.Money);
+                return;
+            }
+        }
+
+        // Được tiền hoặc mất tiền với Ngân hàng
+        public void LuckyDraw_Type0(int IDPlayer, int money) {
+            if(money >= 0){
+                aListPlayer.Find(b => b.ID == IDPlayer).Money += money;
+                this.DisplayChangeMoneyPlayer(IDPlayer, money, true);
+            }
+            else {
+                aListPlayer.Find(b => b.ID == IDPlayer).Money += money;
+                this.DisplayChangeMoneyPlayer(IDPlayer, -money, false);
+            }
+            this.Refresh();
+        }
+
+        // Được tiền hoặc mất tiền với người chơi khác
+        public void LuckyDraw_Type1(int IDPlayer, int money) {
+            if(money >= 0) {
+                foreach(Player temp in aListPlayer) {
+                    if(temp.ID == IDPlayer) {
+                        aListPlayer.Find(b => b.ID == IDPlayer).Money += money;
+                        this.DisplayChangeMoneyPlayer(IDPlayer, money, true);
+                    }
+                    else {
+                        aListPlayer.Find(b => b.ID == IDPlayer).Money -= money;
+                        this.DisplayChangeMoneyPlayer(IDPlayer, money, false);
+                    }
+                }
+            }
+            else {
+                foreach(Player temp in aListPlayer) {
+                    if(temp.ID == IDPlayer) {
+                        aListPlayer.Find(b => b.ID == IDPlayer).Money += money;
+                        this.DisplayChangeMoneyPlayer(IDPlayer, -money, false);
+                    }
+                    else {
+                        aListPlayer.Find(b => b.ID == IDPlayer).Money -= money;
+                        this.DisplayChangeMoneyPlayer(IDPlayer, -money, true);
+                    }
+                }
+            }
+            this.Refresh();
+        }
+
+        // Đi đến nơi nào đó
+        public void LuckyDraw_Type2(int IDPlayer, int IDPlot) {
+            this.MoveVehicleNormal(IDPlayer, IDPlot, false, false);
+        }
+
+        // Đi đến nơi nào đó và được thưởng tiền
+        public void LuckyDraw_Type3(int IDPlayer, int IDPlot) {
+            this.MoveVehicleNormal(IDPlayer, IDPlot, false, true);
+        }
+
+        // Tiến hoặc lùi ? bước
+        public void LuckyDraw_Type4(int IDPlayer, int Steps) {
+            int end = aListPlayer.Find(b=>b.ID==IDPlayer).Position += Steps;
+            if(end > 40) {
+                end -= 40;
+            }
+            this.MoveVehicleNormal(IDPlayer, end, false, false);
+        }
+
+        // Lấy 1 giấy Khí Vận hoặc Cơ Hội
+        public void LuckyDraw_Type5(int IDPlayer, int brand) {
+            this.takeLuckyDraw(IDPlayer, brand);
+        }
+
+        // Vô tù
+        public void LuckyDraw_Type6(int IDPlayer) {
+            this.MoveVehicleNormal(IDPlayer, 31, false, false);
+            aListPlayer.Find(b => b.ID == IDPlayer).GoPrisonByLuckyDraw = true;
+        }
+
+        // Thẻ ra tù
+        public void LuckyDraw_Type7(int IDPlayer) {
+            aListPlayer.Find(b => b.ID == IDPlayer).OutOfJailCard++;
+            this.Refresh();
+        }
+
+        // Sửa nhà
+        public void LuckyDraw_Type8(int IDPlayer, int money) {
+            int amountHouse = 0;
+            int amountRes = 0;
+            foreach(PlayerHouses temp in aListPlayer.Find(b => b.ID == IDPlayer).ListHouses) {
+                if(temp.Apartments == 5) {
+                    amountRes++;
+                }
+                else {
+                    if(temp.Apartments <= 4 && temp.Apartments >= 1) {
+                        amountHouse++;
+                    }
+                }
+            }
+            if(money == 300) {
+                aListPlayer.Find(b => b.ID == IDPlayer).Money -= (amountRes * 300);
+                this.DisplayChangeMoneyPlayer(IDPlayer, money, false);
+            }
+            else {
+                if(money == 25100) {
+                    aListPlayer.Find(b => b.ID == IDPlayer).Money -= (amountRes * 100 + amountHouse * 25);
+                    this.DisplayChangeMoneyPlayer(IDPlayer, money, false);
+                }
+            }
+        }
+
+    #endregion
+
+
+
 
     }
 

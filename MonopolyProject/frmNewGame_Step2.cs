@@ -46,6 +46,8 @@ namespace MonopolyProject {
                 temp.ID = i + 1;
                 temp.Money = this.money;
                 temp.Position = 1;
+                temp.OutOfJailCard = 0;
+                temp.GoPrisonByLuckyDraw = false;
                 aListPlayer.Add(temp);
             }
             if(txtNamePlayer1.Text == "" || txtNamePlayer2.Text == "") {
@@ -58,6 +60,10 @@ namespace MonopolyProject {
                     return;
                 }
                 else {
+                    if(txtNamePlayer1.Text == txtNamePlayer2.Text) {
+                        MessageBox.Show("Tên người chơi không được trùng nhau", "Nhập tên người chơi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     aListPlayer[0].Name = txtNamePlayer1.Text;
                     aListPlayer[0].VehicleImage = new DevExpress.XtraEditors.PictureEdit();
                     aListPlayer[0].VehicleImage = this.CreateVehicleDetail(icbVehicle1.EditValue.ToString(), txtNamePlayer1.Text);
@@ -76,6 +82,10 @@ namespace MonopolyProject {
                             return;
                         }
                         else {
+                            if(txtNamePlayer3.Text == txtNamePlayer2.Text || txtNamePlayer3.Text == txtNamePlayer1.Text) {
+                                MessageBox.Show("Tên người chơi không được trùng nhau", "Nhập tên người chơi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                             aListPlayer[2].Name = txtNamePlayer3.Text;
                             aListPlayer[2].VehicleImage = new DevExpress.XtraEditors.PictureEdit();
                             aListPlayer[2].VehicleImage = this.CreateVehicleDetail(icbVehicle3.EditValue.ToString(), txtNamePlayer3.Text);
@@ -95,6 +105,11 @@ namespace MonopolyProject {
                                 return;
                             }
                             else {
+                                if(txtNamePlayer3.Text == txtNamePlayer2.Text || txtNamePlayer3.Text == txtNamePlayer1.Text || txtNamePlayer4.Text == txtNamePlayer1.Text
+                                    || txtNamePlayer4.Text == txtNamePlayer2.Text || txtNamePlayer4.Text == txtNamePlayer3.Text) {
+                                    MessageBox.Show("Tên người chơi không được trùng nhau", "Nhập tên người chơi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
                                 aListPlayer[2].Name = txtNamePlayer3.Text;
                                 aListPlayer[2].VehicleImage = new DevExpress.XtraEditors.PictureEdit();
                                 aListPlayer[2].VehicleImage = this.CreateVehicleDetail(icbVehicle3.EditValue.ToString(), txtNamePlayer3.Text);

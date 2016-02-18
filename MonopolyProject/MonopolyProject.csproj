@@ -74,6 +74,12 @@
     <Compile Include="frmBuyHouse.Designer.cs">
       <DependentUpon>frmBuyHouse.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDetailHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDetailHouse.Designer.cs">
+      <DependentUpon>frmDetailHouse.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFlashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,12 @@
     </Compile>
     <Compile Include="frmNewGame_Step2.Designer.cs">
       <DependentUpon>frmNewGame_Step2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSaleHouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSaleHouse.Designer.cs">
+      <DependentUpon>frmSaleHouse.cs</DependentUpon>
     </Compile>
     <Compile Include="LuckyDraw.cs" />
     <Compile Include="Player.cs" />
@@ -124,6 +136,9 @@
     <EmbeddedResource Include="frmBuyHouse.resx">
       <DependentUpon>frmBuyHouse.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDetailHouse.resx">
+      <DependentUpon>frmDetailHouse.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmFlashScreen.resx">
       <DependentUpon>frmFlashScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNewGame_Step2.resx">
       <DependentUpon>frmNewGame_Step2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSaleHouse.resx">
+      <DependentUpon>frmSaleHouse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -283,9 +301,11 @@
     <None Include="Resources\Actions-flag-green-icon.png" />
     <None Include="Resources\Crown-icon.png" />
     <None Include="Resources\buy-now-icon.png" />
+    <None Include="Resources\auction-icon.png" />
     <Content Include="Resources\back-icon.png" />
     <Content Include="Resources\bank-icon.png" />
     <Content Include="Resources\dollar-icon.png" />
+    <None Include="Resources\Go-back-icon.png" />
     <Content Include="Resources\hotel-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -300,6 +320,7 @@
     <Content Include="Resources\Monopoly_1.ico" />
     <Content Include="Resources\next-icon.png" />
     <None Include="Resources\play-icon.png" />
+    <None Include="Resources\payment-icon.png" />
     <Content Include="Resources\PlotInfo.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

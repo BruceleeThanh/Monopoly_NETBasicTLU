@@ -69,6 +69,9 @@ namespace MonopolyProject {
                 aPlayHouse.Name = aPlotInfo.Name + "("+cbbHouse.Text+")";
                 aPlayHouse.Apartments = cbbHouse.SelectedIndex;
                 aPlayHouse.Spent = int.Parse(lblTotalMoney.Text);
+                aPlayHouse.Status = 1;
+                string nameHouseLabel = this.afrmMain.turnPlayer.ToString() + this.aPlotInfo.ID.ToString();
+                aPlayHouse.HouseLabel.Name = nameHouseLabel;
                 aPlayHouse.HouseLabel.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
                 aPlayHouse.HouseLabel.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
                 aPlayHouse.HouseLabel.Size = new System.Drawing.Size(40, 20);
@@ -80,10 +83,10 @@ namespace MonopolyProject {
                 this.afrmMain.aListPlayer.Find(b => b.ID == this.afrmMain.turnPlayer).Money -= int.Parse(lblTotalMoney.Text);
                 this.afrmMain.bankMoney += int.Parse(lblTotalMoney.Text);
                 this.afrmMain.aListPlotInfo.Find(b => b.ID == this.aPlotInfo.ID).Status = 1;
-                this.afrmMain.LoadPlayer();
+                this.afrmMain.Refresh();
                 this.afrmMain.DisplayChangeMoneyPlayer(this.afrmMain.turnPlayer, int.Parse(lblTotalMoney.Text), false);
                 this.afrmMain.terCountdownClock_Start();
-                this.afrmMain.EnalbleDice();
+                this.afrmMain.EnableDice();
                 this.Close();
             }
             else {
@@ -112,7 +115,7 @@ namespace MonopolyProject {
 
         private void pboExit_Click(object sender, EventArgs e) {
             this.afrmMain.terCountdownClock_Start();
-            this.afrmMain.EnalbleDice();
+            this.afrmMain.EnableDice();
             this.Close();
         }
     }

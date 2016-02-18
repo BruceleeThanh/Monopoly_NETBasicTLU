@@ -13,7 +13,9 @@ namespace MonopolyProject {
         public int Money { get; set; }
         public int Position { get; set; } // plot = ?
         public int OutOfJailCard { get; set; }
-        public List<PlayerOwes> ListOwes { get; set; }
+        public bool GoPrisonByLuckyDraw { get; set; }
+
+        public List<PlayerOwes> ListOwes = new List<PlayerOwes>();
 
         public List<PlayerHouses> ListHouses = new List<PlayerHouses>();
         public PictureEdit VehicleImage { get; set; }
@@ -30,7 +32,9 @@ namespace MonopolyProject {
         public string Name { get; set; }
         public int Apartments { get; set; }
         public int Spent { get; set; }
+        public int Status { get; set; }
 
         public LabelControl HouseLabel = new LabelControl();
+
     }
 }
